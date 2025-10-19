@@ -13,10 +13,50 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\AoC 2025">
+      <UniqueIdentifier>{ea1c0c9a-b746-4e88-bec3-19cbfd8564a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AoC2024">
+      <UniqueIdentifier>{5a0c097e-d59f-4c29-af5e-c8344f18a711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AoC2024\AoC2024_Day1">
+      <UniqueIdentifier>{0fccd7f5-ad94-4d95-b038-d77b02d1ee8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AoC2024\AoC2024_Day2">
+      <UniqueIdentifier>{f98a49aa-00ae-4a4e-bb5b-5b11416b2ff6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AdventOfCode.cpp">
-      <Filter>Source Files</Filter>
+    <Text Include="AoC2024_Day1.txt">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
+    </Text>
+    <Text Include="AoC2024_Day2.txt">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AoC2024_Day1.cpp">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
     </ClCompile>
+    <ClCompile Include="AoC2024_Day2.cpp">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
+    </ClCompile>
+    <ClCompile Include="template.cpp">
+      <Filter>Source Files\AoC2024</Filter>
+    </ClCompile>
+    <ClCompile Include="AoC2024.cpp">
+      <Filter>Source Files\AoC2024</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AoC2024_Day1.h">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
+    </ClInclude>
+    <ClInclude Include="template.h">
+      <Filter>Source Files\AoC2024</Filter>
+    </ClInclude>
+    <ClInclude Include="AoC2024_Day2.h">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
