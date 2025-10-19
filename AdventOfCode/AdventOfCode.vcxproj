@@ -127,7 +127,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdventOfCode.cpp" />
+    <ClCompile Include="AoC2024_Day1.cpp" />
+    <ClCompile Include="AoC2024_Day2.cpp" />
+    <ClCompile Include="AoC2024.cpp" />
+    <ClCompile Include="template.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AoC2024_Day1.txt" />
+    <Text Include="AoC2024_Day2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AoC2024_Day1.h" />
+    <ClInclude Include="AoC2024_Day2.h" />
+    <ClInclude Include="template.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
