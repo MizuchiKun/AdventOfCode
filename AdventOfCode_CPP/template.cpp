@@ -2,13 +2,10 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <vector>
-
-using namespace std;
 
 namespace AoC2024
 {
-    int Day3(bool useProblemDampener)
+    int DayXX()
     {
         /*** Part One ***/
 
@@ -19,5 +16,7 @@ namespace AoC2024
         /*** Part Two ***/
 
         //
+
+        return 0;
     }
 }
