@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\AoC 2025">
-      <UniqueIdentifier>{ea1c0c9a-b746-4e88-bec3-19cbfd8564a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\AoC2024">
       <UniqueIdentifier>{5a0c097e-d59f-4c29-af5e-c8344f18a711}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Source Files\AoC2024\AoC2024_Day3">
       <UniqueIdentifier>{4dd37bdd-b665-42ba-a351-231c86cfb7af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AoC2025">
+      <UniqueIdentifier>{ea1c0c9a-b746-4e88-bec3-19cbfd8564a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

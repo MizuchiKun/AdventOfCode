@@ -13,33 +13,41 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\AoC2025">
-      <UniqueIdentifier>{2f69f8be-cf8e-46ce-8c23-4e040e07d9f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\AoC2024">
-      <UniqueIdentifier>{3ae43395-35ab-40bf-ba09-fccb484f3c4c}</UniqueIdentifier>
+      <UniqueIdentifier>{5018c748-32e1-4b12-a9ee-d368e7fa1d61}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AoC2024\AoC2024_Day1">
-      <UniqueIdentifier>{e7cc9bf6-21c3-474b-bebe-5b5bddc5e5a8}</UniqueIdentifier>
+      <UniqueIdentifier>{f84bed38-3ba4-40e4-be43-3a3527b568fb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AoC2024\AoC2024_Day2">
-      <UniqueIdentifier>{4cf7e510-4253-40b0-8b45-3ce0054a8082}</UniqueIdentifier>
+      <UniqueIdentifier>{442354ac-b198-4ea5-affc-1aedca1f4325}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AoC2024\AoC2024_Day3">
-      <UniqueIdentifier>{be26f482-9b93-4a53-8b41-b47406ef4cf0}</UniqueIdentifier>
+      <UniqueIdentifier>{4be28175-4cea-44b8-a03e-d25de58cc246}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AoC2024.c">
-      <Filter>Source Files\AoC2024</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="template.c">
-      <Filter>Source Files\AoC2024</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AoC2024_Day1.c">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="template.h">
-      <Filter>Source Files\AoC2024</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="AoC2024_Day1.h">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AoC2024_Day1.txt">
+      <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
+    </Text>
   </ItemGroup>
 </Project>

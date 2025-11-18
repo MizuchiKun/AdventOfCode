@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{00bc5cb7-89e2-44c7-ad15-99670712f3e5}</ProjectGuid>
+    <ProjectGuid>{07c70666-c099-43a9-bb9e-37ecf79363e7}</ProjectGuid>
     <RootNamespace>AdventOfCodeC</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -128,10 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AoC2024.c" />
+    <ClCompile Include="AoC2024_Day1.c" />
     <ClCompile Include="template.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AoC2024_Day1.h" />
     <ClInclude Include="template.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AoC2024_Day1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,7 +12,7 @@ static void Part2()
     return;
 }
 
-void DayXX()
+void Day1()
 {
     Part1();
 
