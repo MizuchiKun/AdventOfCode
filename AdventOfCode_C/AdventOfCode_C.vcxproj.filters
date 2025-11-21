@@ -39,6 +39,9 @@
     <ClCompile Include="utils.c">
       <Filter>Source Files\AoC2024</Filter>
     </ClCompile>
+    <ClCompile Include="AoC2024_Day2.c">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="template.h">
@@ -50,10 +53,16 @@
     <ClInclude Include="utils.h">
       <Filter>Source Files\AoC2024</Filter>
     </ClInclude>
+    <ClInclude Include="AoC2024_Day2.h">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AoC2024_Day1.txt">
       <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
+    </Text>
+    <Text Include="AoC2024_Day2.txt">
+      <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
     </Text>
   </ItemGroup>
 </Project>

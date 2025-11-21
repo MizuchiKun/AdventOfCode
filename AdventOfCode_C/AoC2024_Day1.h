@@ -1,5 +1,5 @@
-﻿#ifndef AoC2024_Day1
-#define AoC2024_Day1
+﻿#ifndef AoC2024_Day1_h
+#define AoC2024_Day1_h
 
 void Day1();
 

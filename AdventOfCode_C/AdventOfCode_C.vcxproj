@@ -131,16 +131,19 @@
   <ItemGroup>
     <ClCompile Include="AoC2024.c" />
     <ClCompile Include="AoC2024_Day1.c" />
+    <ClCompile Include="AoC2024_Day2.c" />
     <ClCompile Include="template.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AoC2024_Day1.h" />
+    <ClInclude Include="AoC2024_Day2.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="AoC2024_Day1.txt" />
+    <Text Include="AoC2024_Day2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

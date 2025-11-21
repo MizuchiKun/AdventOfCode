@@ -1,8 +1,6 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <search.h>  // Why do I allegedly need those?
-//#include <malloc.h>
 #include "utils.h"
 
 static int CompareInts(const void *a, const void *b)
@@ -13,22 +11,24 @@ static int CompareInts(const void *a, const void *b)
     return (intA > intB) - (intA < intB);
 }
 
-static void Part1()
+static int** ExtractLocationIDs(int *listCount, int *locationsPerList)
 {
     char filename[] = "AoC2024_Day1.txt";
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
         printf("The file \"%s\" could not be opened/found.", filename);
-        return;
+        return NULL;
     }
 
     #define LINE_LENGTH 20
-    #define LOCATIONS_PER_LIST 1000
-    #define LIST_COUNT 2
+    const int LIST_COUNT = 2;
+    const int LOCATIONS_PER_LIST = 1000;
+    *listCount = LIST_COUNT;
+    *locationsPerList = LOCATIONS_PER_LIST;
     char line[LINE_LENGTH];
     int lineIndex = 0;
-    int locationIDs[LIST_COUNT][LOCATIONS_PER_LIST] = {0};
+    int **locationIDs = Create2DIntArray(LIST_COUNT, LOCATIONS_PER_LIST);
     while (fgets(line, LINE_LENGTH, file))
     {
         const char DELIMITER[] = " \n";
@@ -53,6 +53,16 @@ static void Part1()
 
     fclose(file);
 
+    return locationIDs;
+}
+
+
+static void Part1()
+{
+    int LIST_COUNT = 0;
+    int LOCATIONS_PER_LIST = 0;
+    int **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
+
     for (int i = 0; i < LIST_COUNT; i++)
         qsort(locationIDs[i], LOCATIONS_PER_LIST, sizeof(locationIDs[i][0]), CompareInts);
     
@@ -61,11 +71,29 @@ static void Part1()
         totalDistance += abs(locationIDs[0][i] - locationIDs[1][i]);
 
     printf("Part 1: The total distance between the lists is: %d\n", totalDistance);
+
+    Destroy2DIntArray(locationIDs);
 }
 
 static void Part2()
 {
-    printf("<Code of part 2 hasn't been implemented yet.>\n");
+    int LIST_COUNT = 0;
+    int LOCATIONS_PER_LIST = 0;
+    int **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
+
+    for (int i = 0; i < LIST_COUNT; i++)
+        qsort(locationIDs[i], LOCATIONS_PER_LIST, sizeof(locationIDs[i][0]), CompareInts);
+
+    int similarityScore = 0;
+    for (int i = 0; i < LOCATIONS_PER_LIST; i++)
+    {
+        int target = locationIDs[0][i];
+        similarityScore += target * CountFrequency(locationIDs[1], LOCATIONS_PER_LIST, target);
+    }
+
+    printf("Part 2: The similarity score of the lists is: %d\n", similarityScore);
+
+    Destroy2DIntArray(locationIDs);
 }
 
 void Day1()

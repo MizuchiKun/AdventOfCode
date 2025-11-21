@@ -1,5 +1,5 @@
-﻿#ifndef template
-#define template
+﻿#ifndef template_h
+#define template_h
 
 void DayXX();
 
