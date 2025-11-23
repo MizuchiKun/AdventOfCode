@@ -2,14 +2,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <malloc.h>
+#include <string.h>
 #include "utils.h"
 
-static bool IsReportSafe(int* report, int reportLength, bool useProblemDampener)
+static bool IsReportSafe(int *report, int reportLength)
 {
     bool isSafe = true;
 
-    // (Handle problem dampener stuff in the loop in part 2. 
-    //  For now, just ignore that parameter.)
     const bool REPORT_STARTS_INCREASING = report[1] > report[0];
     const int MIN_LEVEL_DIFFERENCE = 1;
     const int MAX_LEVEL_DIFFERENCE = 3;
@@ -30,9 +29,41 @@ static bool IsReportSafe(int* report, int reportLength, bool useProblemDampener)
     return isSafe;
 }
 
-static void Part1(bool useProblemDampener)
+static bool IsReportSafeProblemDampener(int *report, int reportLength)
 {
-    const char filename[] = "AoC2024_Day2.txt";
+    if (IsReportSafe(report, reportLength))
+        return true;  // Don't bother checking 'problem dampener' stuff.
+
+    const int SUBREPORT_LENGTH = reportLength - 1;
+    bool isSafe = false;
+
+    for (int preGapCount = 0; preGapCount < reportLength; preGapCount++)
+    {
+        int *subreport = calloc(SUBREPORT_LENGTH, sizeof(*subreport));
+        if (subreport == NULL)
+        {
+            printf("Memory allocation failed.");
+            exit(EXIT_FAILURE);
+        }
+
+        const int bytesPreGap = preGapCount * sizeof(*subreport);
+        const int bytesPostGap = (SUBREPORT_LENGTH - preGapCount) 
+                                 * sizeof(*subreport);
+        memcpy(subreport, report, bytesPreGap);
+        memcpy(subreport + preGapCount, report + preGapCount + 1, bytesPostGap);
+
+        if (IsReportSafe(subreport, SUBREPORT_LENGTH))
+        {
+            isSafe = true;
+            break;
+        }
+    }
+
+    return isSafe;
+}
+
+static int CountSafeReports(const char filename[], bool useProblemDampener)
+{
     FILE *file = fopen(filename, "r");
     if (!file)
     {
@@ -58,7 +89,7 @@ static void Part1(bool useProblemDampener)
         char *remainingReportStr = line;
         int level = 0;
         int reportLength = 0;
-        while (( level = strtol(remainingReportStr, &remainingReportStr, BASE) ))
+        while ((level = strtol(remainingReportStr, &remainingReportStr, BASE)))
             report[reportLength++] = level;
 
         // Resize report to its actual size (/number of elements).
@@ -72,26 +103,35 @@ static void Part1(bool useProblemDampener)
             exit(EXIT_FAILURE);
         }
 
-        if (IsReportSafe(report, reportLength, useProblemDampener))
+        bool reportIsSafe = useProblemDampener
+                            ? IsReportSafeProblemDampener(report, reportLength)
+                            : IsReportSafe(report, reportLength);
+        if (reportIsSafe)
             safeReportsCount += 1;
 
         free(report);
         report = NULL;
     }
 
-    printf("Part 1: There were a total of %d safe reports.\n", safeReportsCount);
+    return safeReportsCount;
+}
+
+static void Part1()
+{
+    int safeReportsCount = CountSafeReports("AoC2024_Day2.txt", false);
+
+    printf("Part 1: Safe reports without problem dampener: %d\n", safeReportsCount);
 }
 
 static void Part2()
 {
-    //maybe just call Part1(true)?
-    printf("<Code of part 2 hasn't been implemented yet.>\n");
+    int safeReportsCount = CountSafeReports("AoC2024_Day2.txt", true);
+
+    printf("Part 2: Safe reports with problem dampener: %d\n", safeReportsCount);
 }
 
 void Day2()
 {
-    bool useProblemDampener = false;
-    Part1(useProblemDampener);
-
+    Part1();
     Part2();
 }
