@@ -1,6 +1,8 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 
+#define GET_VARIABLE_NAME(variable) (#variable)
+
 int **Create2DIntArray(int lengthDimension1, int lengthDimension2)
 {
 	int *values = calloc(lengthDimension1 * lengthDimension2, sizeof(int));

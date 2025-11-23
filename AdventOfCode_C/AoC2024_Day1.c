@@ -36,7 +36,7 @@ static int** ExtractLocationIDs(int *listCount, int *locationsPerList)
         char *numberToken = NULL;
         char *savePointer = line;
         int listIndex = 0;
-        while ((numberToken = strtok_s(savePointer, DELIMITER, &savePointer)))
+        while (( numberToken = strtok_s(savePointer, DELIMITER, &savePointer) ))
         {
             // Technically strtok_s() is somewhat redundant here because strtol() can just extract 
             // the numbers on its own. But I'm gonna leave it as a reference, so I know how to use it, I guess.
