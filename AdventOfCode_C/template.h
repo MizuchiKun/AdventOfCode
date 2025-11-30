@@ -1,6 +1,6 @@
-#ifndef template
-#define template
+﻿#ifndef template_h
+#define template_h
 
-int DayXX();
+void DayXX();
 
 #endif

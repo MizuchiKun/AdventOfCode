@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+
+
+
+# FUCK PCRE2 (temporary stuff for StackOverflow commit).
+!/packages/

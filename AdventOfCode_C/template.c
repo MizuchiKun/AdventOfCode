@@ -1,19 +1,19 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <algorithm>
+﻿#include <stdio.h>
+#include <stdlib.h>
 
-int DayXX()
+static void Part1()
 {
-    /*** Part One ***/
+    printf("<Code of part 1 hasn't been implemented yet.>\n");
+}
 
-    //
+static void Part2()
+{
+    printf("<Code of part 2 hasn't been implemented yet.>\n");
+}
 
+void DayXX()
+{
+    Part1();
 
-
-    /*** Part Two ***/
-
-    //
-
-    return 0;
+    Part2();
 }
