@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AoC2024.c" />
+    <ClCompile Include="AoC.c" />
     <ClCompile Include="AoC2024_Day1.c" />
     <ClCompile Include="AoC2024_Day2.c" />
     <ClCompile Include="AoC2024_Day3.c" />

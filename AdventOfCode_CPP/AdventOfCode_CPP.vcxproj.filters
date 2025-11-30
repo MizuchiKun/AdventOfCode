@@ -25,9 +25,6 @@
     <Filter Include="Source Files\AoC2024\AoC2024_Day3">
       <UniqueIdentifier>{4dd37bdd-b665-42ba-a351-231c86cfb7af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AoC2025">
-      <UniqueIdentifier>{ea1c0c9a-b746-4e88-bec3-19cbfd8564a8}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AoC2024_Day1.txt">

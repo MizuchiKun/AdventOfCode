@@ -33,17 +33,17 @@
     <ClCompile Include="AoC2024_Day1.c">
       <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
     </ClCompile>
-    <ClCompile Include="AoC2024.c">
-      <Filter>Source Files\AoC2024</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.c">
-      <Filter>Source Files\AoC2024</Filter>
-    </ClCompile>
     <ClCompile Include="AoC2024_Day2.c">
       <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
     </ClCompile>
     <ClCompile Include="AoC2024_Day3.c">
       <Filter>Source Files\AoC2024\AoC2024_Day3</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AoC.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,14 +53,14 @@
     <ClInclude Include="AoC2024_Day1.h">
       <Filter>Source Files\AoC2024\AoC2024_Day1</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Source Files\AoC2024</Filter>
-    </ClInclude>
     <ClInclude Include="AoC2024_Day2.h">
       <Filter>Source Files\AoC2024\AoC2024_Day2</Filter>
     </ClInclude>
     <ClInclude Include="AoC2024_Day3.h">
       <Filter>Source Files\AoC2024\AoC2024_Day3</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
