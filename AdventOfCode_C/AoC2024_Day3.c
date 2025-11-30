@@ -17,6 +17,39 @@
 #define DO_MATCH_LENGTH 1
 #define DONT_MATCH_LENGTH 1
 
+static regex_t MulExpression = {0};
+static regex_t DoExpression = {0};
+static regex_t DontExpression = {0};
+
+static void FreeRegexExpressions()
+{
+    regfree(&MulExpression);
+    regfree(&DoExpression);
+    regfree(&DontExpression);
+}
+
+/// Compiles the regex expressions for mul(), do(), and don't().
+///
+/// @return Returns true when an error occurred, false otherwise.
+static bool CompileRegexExpressions()
+{
+    bool anyRegcompFailed = false;
+
+    bool ifndefMulExpression = MulExpression.re_match_data == 0;
+    if (ifndefMulExpression)
+    {
+        const char MUL_REGEX_STR[] = "mul\\((\\d{1,3}),(\\d{1,3})\\)";
+        const char DO_REGEX_STR[] = "do\\(\\)";
+        const char DONT_REGEX_STR[] = "don\\'t\\(\\)";
+
+        anyRegcompFailed = regcomp(&MulExpression, MUL_REGEX_STR, REG_EXTENDED)
+                           || regcomp(&DoExpression, DO_REGEX_STR, REG_EXTENDED)
+                           || regcomp(&DontExpression, DONT_REGEX_STR, REG_EXTENDED);
+    }
+
+    return anyRegcompFailed;
+}
+
 /// Handles the given sequence of instructions 
 /// and returns the total of all mul() instructions.
 ///
@@ -27,17 +60,7 @@
 /// @return The total of all mul() instructions in the given string.
 static int HandleInstructions(char *instructions, bool *isMulEnabled, const bool handleDoDont)
 {
-    const char MUL_REGEX_STR[] = "mul\\((\\d{1,3}),(\\d{1,3})\\)";
-    const char DO_REGEX_STR[] = "do\\(\\)";
-    const char DONT_REGEX_STR[] = "don\\'t\\(\\)";
-    regex_t mulExpression;
-    regex_t doExpression;
-    regex_t dontExpression;
-
-    // make regex_t global and put compilation into its own function which only runs when they are uninitialised?
-    bool anyRegcompFailed = regcomp(&mulExpression, MUL_REGEX_STR, REG_EXTENDED)
-                            || regcomp(&doExpression, DO_REGEX_STR, REG_EXTENDED)
-                            || regcomp(&dontExpression, DONT_REGEX_STR, REG_EXTENDED);
+    bool anyRegcompFailed = CompileRegexExpressions();
     if (anyRegcompFailed)
     {
         perror("A regex compilation failed.");
@@ -49,39 +72,46 @@ static int HandleInstructions(char *instructions, bool *isMulEnabled, const bool
     bool hasMoreMulInstructions = true;
     while (hasMoreMulInstructions)
     {
+        // (I guess I could technically put the regexec() stuff into its own function, 
+        //  but how to return the individual regexec() return values?)
         regmatch_t mulMatch[MUL_MATCH_LENGTH];
         regmatch_t doMatch[DO_MATCH_LENGTH];
         regmatch_t dontMatch[DONT_MATCH_LENGTH];
 
-        int mulReturn = regexec(&mulExpression, readHead, MUL_MATCH_LENGTH, mulMatch, 0);
-        int doReturn = regexec(&doExpression, readHead, DO_MATCH_LENGTH, doMatch, 0);
-        int dontReturn = regexec(&dontExpression, readHead, DONT_MATCH_LENGTH, dontMatch, 0);
-
+        int mulReturn = regexec(&MulExpression, readHead, MUL_MATCH_LENGTH, mulMatch, 0);
+        int doReturn = regexec(&DoExpression, readHead, DO_MATCH_LENGTH, doMatch, 0);
+        int dontReturn = regexec(&DontExpression, readHead, DONT_MATCH_LENGTH, dontMatch, 0);
         if (mulReturn == REG_NOMATCH)
         {
             hasMoreMulInstructions = false;
             break;
         }
 
-        bool mulRegexecFailed = !(mulReturn == REGEX_MATCHED || mulReturn == REG_NOMATCH);
-        bool doRegexecFailed = !(doReturn == REGEX_MATCHED || doReturn == REG_NOMATCH);
-        bool dontRegexecFailed = !(dontReturn == REGEX_MATCHED || dontReturn == REG_NOMATCH);
+        bool mulMatchFound = mulReturn == REGEX_MATCHED;
+        bool doMatchFound = doReturn == REGEX_MATCHED;
+        bool dontMatchFound = dontReturn == REGEX_MATCHED;
+
+        bool mulRegexecFailed = !(mulMatchFound || mulReturn == REG_NOMATCH);
+        bool doRegexecFailed = !(doMatchFound || doReturn == REG_NOMATCH);
+        bool dontRegexecFailed = !(dontMatchFound || dontReturn == REG_NOMATCH);
         if (mulRegexecFailed || doRegexecFailed || dontRegexecFailed)
         {
             perror("A regexec() failed.");
-            regfree(&mulExpression);
-            regfree(&doExpression);
-            regfree(&dontExpression);
+            FreeRegexExpressions();
             exit(EXIT_FAILURE);
         }
 
-        // (A 'start' value of LINE_LENGTH means there was no match.)
-        int mulMatchStart = (mulReturn == REGEX_MATCHED) ? mulMatch->rm_so : LINE_LENGTH;
-        int doMatchStart = (doReturn == REGEX_MATCHED) ? doMatch->rm_so : LINE_LENGTH;
-        int dontMatchStart = (dontReturn == REGEX_MATCHED) ? dontMatch->rm_so : LINE_LENGTH;
+        // (Maybe I could put the whole 'finding the first-occurring match' stuff 
+        //  into its own function, but that'd have to also make sure that there
+        //  actually was a match for the returned value. Because I can't really 
+        //  use mulReturn etc. if that just stays in the above 'GetNextMatches' (regexec) function.)
+        // A 'start' value of LINE_LENGTH means there was no match.
+        int mulMatchStart = mulMatchFound ? mulMatch->rm_so : LINE_LENGTH;
+        int doMatchStart = doMatchFound ? doMatch->rm_so : LINE_LENGTH;
+        int dontMatchStart = dontMatchFound ? dontMatch->rm_so : LINE_LENGTH;
 
         int firstMatchStart = min(mulMatchStart, min(doMatchStart, dontMatchStart));
-        if (mulReturn == REGEX_MATCHED && mulMatch->rm_so == firstMatchStart)
+        if (mulMatchFound && mulMatch->rm_so == firstMatchStart)
         {
             if (*isMulEnabled)
             {
@@ -97,23 +127,35 @@ static int HandleInstructions(char *instructions, bool *isMulEnabled, const bool
 
             readHead += mulMatch->rm_eo;
         }
-        else if (doReturn == REGEX_MATCHED && doMatch->rm_so == firstMatchStart)
+        else if (doMatchFound && doMatch->rm_so == firstMatchStart)
         {
             if (handleDoDont)
                 *isMulEnabled = true;
             readHead += doMatch->rm_eo;
         }
-        else if (dontReturn == REGEX_MATCHED && dontMatch->rm_so == firstMatchStart)
+        else if (dontMatchFound && dontMatch->rm_so == firstMatchStart)
         {
             if (handleDoDont)
-                *isMulEnabled = false;
-            readHead += dontMatch->rm_eo;
+            {
+                if (doMatchFound)
+                {
+                    // Take a shortcut to after the next do(), since all mul()
+                    // until then are disable anyway.
+                    readHead += doMatch->rm_eo;
+                }
+                else
+                {
+                    // If there are no more do(), just stop checking the current string.
+                    *isMulEnabled = false;
+                    break;
+                }
+            }
+            else
+            {
+                readHead += dontMatch->rm_eo;
+            }
         }
     }
-
-    regfree(&mulExpression);
-    regfree(&doExpression);
-    regfree(&dontExpression);
 
     return totalMul;
 }
@@ -160,6 +202,7 @@ static void Part2()
 void Day3()
 {
     Part1();
-
     Part2();
+
+    FreeRegexExpressions();
 }
