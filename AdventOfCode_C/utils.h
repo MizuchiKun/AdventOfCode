@@ -1,6 +1,13 @@
 ﻿#ifndef utils_h
 #define utils_h
 
+#ifndef PCRE2POSIX_H
+    #define PCRE2POSIX_H
+    #define PCRE2_STATIC
+    #define PCRE2_CODE_UNIT_WIDTH 8
+    #include <pcre2posix.h>  // Essentially regex.h.
+#endif
+
 /// Creates a 2D int array of the given dimensions and returns an int** to it.
 /// 
 /// @param lengthDimension1 The length of the array's first dimension.
@@ -20,5 +27,12 @@ void Destroy2DIntArray(int **array);
 /// @param target The value to be searched for / counted.
 /// @return The number of times the target value occurs in the given array.
 int CountFrequency(int array[], int length, int target);
+
+/// Creates the substring of sourceString described by match.
+/// 
+/// @param match The match which describes the substring.
+/// @param sourceString The string in which the match was found.
+/// @return A pointer to the created substring.
+char *MatchToStr(regmatch_t *match, char *sourceString);
 
 #endif
