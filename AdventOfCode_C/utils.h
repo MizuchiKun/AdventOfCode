@@ -35,4 +35,15 @@ int CountFrequency(int array[], int length, int target);
 /// @return A pointer to the created substring.
 char *MatchToStr(regmatch_t *match, char *sourceString);
 
+/// @brief Calculates the result of a mod b.
+/// @param a The first argument.
+/// @param b The second argument.
+/// @return The modulus of a and b.
+int Modulo(int a, int b);
+
+/// @brief Returns the sign of the given number.
+/// @param number The number to check.
+/// @return +1 when number is positive, -1 when number is negative, and 0 when number is 0.
+int Sign(int number);
+
 #endif

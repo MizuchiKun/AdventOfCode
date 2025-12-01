@@ -109,3 +109,14 @@ char *MatchToStr(regmatch_t *match, char *sourceString)
 
     return substring;
 }
+
+int Modulo(int a, int b)
+{
+    int result = a % b;
+    return (result < 0) ? result + b : result;
+}
+
+int Sign(int number)
+{
+    return (number == 0) ? 0 : number / abs(number);
+}
