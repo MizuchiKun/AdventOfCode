@@ -25,6 +25,12 @@
     <Filter Include="Source Files\AoC2024\AoC2024_Day3">
       <UniqueIdentifier>{4be28175-4cea-44b8-a03e-d25de58cc246}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AoC2025">
+      <UniqueIdentifier>{d4b1d497-0fc3-412d-ad52-80eb2aec57af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AoC2025\AoC2025_Day1">
+      <UniqueIdentifier>{94d869b7-c452-42f0-9c18-fb369121f405}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="template.c">
@@ -45,6 +51,9 @@
     <ClCompile Include="AoC.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AoC2025_Day1.c">
+      <Filter>Source Files\AoC2025\AoC2025_Day1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="template.h">
@@ -62,6 +71,9 @@
     <ClInclude Include="utils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="AoC2025_Day1.h">
+      <Filter>Source Files\AoC2025\AoC2025_Day1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AoC2024_Day1.txt">
@@ -72,6 +84,9 @@
     </Text>
     <Text Include="AoC2024_Day3.txt">
       <Filter>Source Files\AoC2024\AoC2024_Day3</Filter>
+    </Text>
+    <Text Include="AoC2025_Day1.txt">
+      <Filter>Source Files\AoC2025\AoC2025_Day1</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,5 @@ static void Part2()
 void DayXX()
 {
     Part1();
-
     Part2();
 }
