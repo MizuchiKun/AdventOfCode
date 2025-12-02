@@ -107,6 +107,7 @@ static int RotationsToPassword(char *filename, const bool useNewMethod)
             IncrementPasswordOldMethod(line, &password, &dial);
     }
 
+    fclose(file);
     return password;
 }
 

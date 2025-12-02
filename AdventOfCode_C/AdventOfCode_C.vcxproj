@@ -151,6 +151,7 @@
     <ClCompile Include="AoC2024_Day2.c" />
     <ClCompile Include="AoC2024_Day3.c" />
     <ClCompile Include="AoC2025_Day1.c" />
+    <ClCompile Include="AoC2025_Day2.c" />
     <ClCompile Include="template.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="AoC2024_Day2.h" />
     <ClInclude Include="AoC2024_Day3.h" />
     <ClInclude Include="AoC2025_Day1.h" />
+    <ClInclude Include="AoC2025_Day2.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -167,6 +169,7 @@
     <Text Include="AoC2024_Day2.txt" />
     <Text Include="AoC2024_Day3.txt" />
     <Text Include="AoC2025_Day1.txt" />
+    <Text Include="AoC2025_Day2.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

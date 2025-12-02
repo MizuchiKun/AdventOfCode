@@ -1,7 +1,9 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <malloc.h>
+#include <math.h>
 #ifndef PCRE2POSIX_H
     #define PCRE2POSIX_H
     #define PCRE2_STATIC
@@ -11,7 +13,7 @@
 
 #define GET_VARIABLE_NAME(variable) (#variable)
 
-int **Create2DIntArray(int lengthDimension1, int lengthDimension2)
+int32_t **Create2DIntArray(uint32_t lengthDimension1, uint32_t lengthDimension2)
 {
     int *values = calloc(lengthDimension1 * lengthDimension2, sizeof(int));
     int **array = malloc(lengthDimension1 * sizeof(int*));
@@ -27,23 +29,23 @@ int **Create2DIntArray(int lengthDimension1, int lengthDimension2)
     return array;
 }
 
-void Destroy2DIntArray(int **array)
+void Destroy2DIntArray(uint32_t **array)
 {
     free(*array);
     free(array);
 }
 
-static int OccurenceLowerBound(int array[], int length, int target)
+static int32_t OccurenceLowerBound(int32_t array[], int32_t length, int32_t target)
 {
     // Feels a bit redundant having two identical functions with only one condition being different.
-    int result = length;
-    int lowerBound = 0;
-    int upperBound = length - 1;
+    int32_t result = length;
+    int32_t lowerBound = 0;
+    int32_t upperBound = length - 1;
 
     while (lowerBound <= upperBound)
     {
-        int intervalSpan = upperBound - lowerBound;
-        int middle = lowerBound + intervalSpan / 2;
+        int32_t intervalSpan = upperBound - lowerBound;
+        int32_t middle = lowerBound + intervalSpan / 2;
 
         if (array[middle] >= target)
         {
@@ -59,17 +61,17 @@ static int OccurenceLowerBound(int array[], int length, int target)
     return result;
 }
 
-static int OccurenceUpperBound(int array[], int length, int target)
+static int32_t OccurenceUpperBound(int32_t array[], int32_t length, int32_t target)
 {
     // Feels a bit redundant having two identical functions with only one condition being different.
-    int result = length;
-    int lowerBound = 0;
-    int upperBound = length - 1;
+    int32_t result = length;
+    int32_t lowerBound = 0;
+    int32_t upperBound = length - 1;
 
     while (lowerBound <= upperBound)
     {
-        int intervalSpan = upperBound - lowerBound;
-        int middle = lowerBound + intervalSpan / 2;
+        int32_t intervalSpan = upperBound - lowerBound;
+        int32_t middle = lowerBound + intervalSpan / 2;
 
         if (array[middle] > target)
         {
@@ -86,7 +88,7 @@ static int OccurenceUpperBound(int array[], int length, int target)
 }
 
 // Basis of this binary search frequency counting code: https://www.geeksforgeeks.org/dsa/count-number-of-occurrences-or-frequency-in-a-sorted-array/#expected-approach-using-binary-search-ologn-time-and-o1-space.
-int CountFrequency(int array[], int length, int target)
+int32_t CountFrequency(int32_t *array, int32_t length, int32_t target)
 {
     return OccurenceUpperBound(array, length, target)
            - OccurenceLowerBound(array, length, target);
@@ -110,13 +112,19 @@ char *MatchToStr(regmatch_t *match, char *sourceString)
     return substring;
 }
 
-int Modulo(int a, int b)
+uint32_t Modulo(int64_t a, int64_t b)
 {
     int result = a % b;
     return (result < 0) ? result + b : result;
 }
 
-int Sign(int number)
+int8_t Sign(int64_t number)
 {
     return (number == 0) ? 0 : number / abs(number);
+}
+
+uint64_t CountDigits(int64_t value)
+{
+    if (value == 0)  return 1;
+    return (uint64_t)log10l(llabs(value)) + 1;
 }

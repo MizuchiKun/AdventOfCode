@@ -3,12 +3,12 @@
 
 static void Part1()
 {
-    printf("<Code of part 1 hasn't been implemented yet.>\n");
+    printf("Part 1: <not implemented yet>\n");
 }
 
 static void Part2()
 {
-    printf("<Code of part 2 hasn't been implemented yet.>\n");
+    printf("Part 2: <not implemented yet>\n");
 }
 
 void DayXX()

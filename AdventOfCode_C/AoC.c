@@ -1,10 +1,11 @@
 ﻿// AoC.c : This file contains the 'main' function. Program execution begins and ends there.
 #include "AoC2025_Day1.h"
+#include "AoC2025_Day2.h"
 
 int main()
 {
     // Run the current day's code.
-    AoC2025_Day1();
+    AoC2025_Day2();
 
     return 0;
 }
