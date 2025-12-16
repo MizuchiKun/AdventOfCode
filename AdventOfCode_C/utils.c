@@ -123,8 +123,8 @@ int8_t Sign(int64_t number)
     return (number == 0) ? 0 : number / abs(number);
 }
 
-uint64_t CountDigits(int64_t value)
+uint32_t CountDigits(int64_t value)
 {
     if (value == 0)  return 1;
-    return (uint64_t)log10l(llabs(value)) + 1;
+    return (uint32_t)log10l(llabs(value)) + 1;
 }

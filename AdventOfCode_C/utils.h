@@ -50,6 +50,6 @@ int8_t Sign(int64_t number);
 /// @brief Counts the number of digits in value.
 /// @param value The value to check.
 /// @return The number of digits in value.
-uint64_t CountDigits(int64_t value);
+uint32_t CountDigits(int64_t value);
 
 #endif
