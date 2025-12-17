@@ -2,12 +2,9 @@
 #define utils_h
 
 #include <stdint.h>
-#ifndef PCRE2POSIX_H
-    #define PCRE2POSIX_H
-    #define PCRE2_STATIC
-    #define PCRE2_CODE_UNIT_WIDTH 8
-    #include <pcre2posix.h>  // Essentially regex.h.
-#endif
+#include "pcre2posix_custom.h"
+
+#define GET_VARIABLE_NAME(variable) (#variable)
 
 /// Creates a 2D int array of the given dimensions and returns an int** to it.
 /// 

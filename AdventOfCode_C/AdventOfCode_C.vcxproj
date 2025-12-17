@@ -161,6 +161,7 @@
     <ClInclude Include="AoC2024_Day3.h" />
     <ClInclude Include="AoC2025_Day1.h" />
     <ClInclude Include="AoC2025_Day2.h" />
+    <ClInclude Include="pcre2posix_custom.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

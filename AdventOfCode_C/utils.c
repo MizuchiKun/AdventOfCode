@@ -4,14 +4,8 @@
 #include <stdint.h>
 #include <malloc.h>
 #include <math.h>
-#ifndef PCRE2POSIX_H
-    #define PCRE2POSIX_H
-    #define PCRE2_STATIC
-    #define PCRE2_CODE_UNIT_WIDTH 8
-    #include <pcre2posix.h>  // Essentially regex.h.
-#endif
-
-#define GET_VARIABLE_NAME(variable) (#variable)
+#include "utils.h"
+#include "pcre2posix_custom.h"
 
 int32_t **Create2DIntArray(uint32_t lengthDimension1, uint32_t lengthDimension2)
 {

@@ -1,15 +1,11 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#ifndef PCRE2POSIX_H
-    #define PCRE2POSIX_H
-    #define PCRE2_STATIC
-    #define PCRE2_CODE_UNIT_WIDTH 8
-    #include <pcre2posix.h>  // Essentially regex.h.
-#endif
 #include <malloc.h>
 #include <string.h>
+#include "AoC2024_Day3.h"
 #include "utils.h"
+#include "pcre2posix_custom.h"
 
 #define REGEX_MATCHED 0
 #define LINE_LENGTH 3500

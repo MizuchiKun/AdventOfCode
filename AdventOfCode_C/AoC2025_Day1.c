@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "AoC2025_Day1.h"
 #include "utils.h"
 
 #define LINE_LENGTH 10

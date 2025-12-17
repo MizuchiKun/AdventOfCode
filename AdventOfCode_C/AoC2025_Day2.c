@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
+#include "AoC2025_Day2.h"
 #include "utils.h"
 
 #define LINE_LENGTH 560

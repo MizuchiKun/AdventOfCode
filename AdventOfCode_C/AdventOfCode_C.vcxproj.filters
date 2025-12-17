@@ -83,6 +83,9 @@
     <ClInclude Include="AoC2025_Day2.h">
       <Filter>Source Files\AoC2025\AoC2025_Day2</Filter>
     </ClInclude>
+    <ClInclude Include="pcre2posix_custom.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AoC2024_Day1.txt">

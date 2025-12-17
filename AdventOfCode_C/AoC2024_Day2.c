@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <malloc.h>
 #include <string.h>
+#include "AoC2024_Day2.h"
 #include "utils.h"
 
 static bool IsReportSafe(int *report, int reportLength)

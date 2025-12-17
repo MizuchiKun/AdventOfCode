@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "AoC2024_Day1.h"
 #include "utils.h"
 
 static int CompareInts(const void *a, const void *b)
