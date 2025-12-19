@@ -79,7 +79,7 @@ static void IncrementPasswordNewMethod(char *instruction, int *password, int *di
     *password += rotationFullCycles;
 
     *dial += rotation;
-    *dial = Modulo(*dial, CLICK_COUNT);
+    *dial = (int)Modulo(*dial, CLICK_COUNT);
 }
 
 /// @brief Prcoesses all rotation instructions in the given file and returns the password from it.

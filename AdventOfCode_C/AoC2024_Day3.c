@@ -1,7 +1,6 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <malloc.h>
 #include <string.h>
 #include "AoC2024_Day3.h"
 #include "utils.h"

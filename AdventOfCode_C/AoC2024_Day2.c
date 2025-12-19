@@ -40,12 +40,7 @@ static bool IsReportSafeProblemDampener(int *report, int reportLength)
 
     for (int preGapCount = 0; preGapCount < reportLength; preGapCount++)
     {
-        int *subreport = calloc(SUBREPORT_LENGTH, sizeof(*subreport));
-        if (subreport == NULL)
-        {
-            printf("Memory allocation failed.");
-            exit(EXIT_FAILURE);
-        }
+        int *subreport = (int*)SafeCalloc(SUBREPORT_LENGTH, sizeof(*subreport));
 
         const int bytesPreGap = preGapCount * sizeof(*subreport);
         const int bytesPostGap = (SUBREPORT_LENGTH - preGapCount) 
@@ -58,6 +53,8 @@ static bool IsReportSafeProblemDampener(int *report, int reportLength)
             isSafe = true;
             break;
         }
+
+        free(subreport);
     }
 
     return isSafe;
@@ -79,12 +76,7 @@ static int CountSafeReports(const char filename[], bool useProblemDampener)
     char line[LINE_LENGTH] = "";
     while (fgets(line, LINE_LENGTH, file))
     {
-        int *report = calloc(MAX_LEVEL_COUNT, sizeof(*report));
-        if (report == NULL)
-        {
-            printf("Memory allocation failed.");
-            exit(EXIT_FAILURE);
-        }
+        int *report = (int*)SafeCalloc(MAX_LEVEL_COUNT, sizeof(*report));
 
         const int BASE = 10;
         char *remainingReportStr = line;
@@ -94,15 +86,7 @@ static int CountSafeReports(const char filename[], bool useProblemDampener)
             report[reportLength++] = level;
 
         // Resize report to its actual size (/number of elements).
-        int *reportBackup = report;  // (To prevent the realloc() warning.)
-        report = realloc(report, reportLength * sizeof(*report));
-        if (report == NULL)
-        {
-            printf("Memory allocation failed.");
-            free(reportBackup);
-            reportBackup = NULL;
-            exit(EXIT_FAILURE);
-        }
+        report = SafeRealloc(report, reportLength * sizeof(*report));
 
         bool reportIsSafe = useProblemDampener
                             ? IsReportSafeProblemDampener(report, reportLength)

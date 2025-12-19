@@ -11,12 +11,12 @@
 /// @param lengthDimension1 The length of the array's first dimension.
 /// @param lengthDimension2 The length of the array's second dimension.
 /// @return An int** to the created 2D int array.
-int32_t **Create2DIntArray(uint32_t lengthDimension1, uint32_t lengthDimension2);
+int32_t **Create2DIntArray(size_t lengthDimension1, size_t lengthDimension2);
 
 /// Frees the memory the given 2D array occupies.
 /// 
 /// @param array The array to be destroyed.
-void Destroy2DIntArray(uint32_t **array);
+void Destroy2DIntArray(int32_t **array);
 
 /// Finds the frequency of the target value in the given array.
 /// 
@@ -37,7 +37,7 @@ char *MatchToStr(regmatch_t *match, char *sourceString);
 /// @param a The first argument.
 /// @param b The second argument.
 /// @return The modulus of a and b.
-uint32_t Modulo(int64_t a, int64_t b);
+uint64_t Modulo(int64_t a, int64_t b);
 
 /// @brief Returns the sign of the given number.
 /// @param number The number to check.
@@ -47,6 +47,23 @@ int8_t Sign(int64_t number);
 /// @brief Counts the number of digits in value.
 /// @param value The value to check.
 /// @return The number of digits in value.
-uint32_t CountDigits(int64_t value);
+uint8_t CountDigits(int64_t value);
+
+/// @brief A 'safe' version of malloc() which prints an error and exits the program when malloc() fails.
+/// @param size The size (in bytes) to allocate.
+/// @return A pointer to the allocated block of memory.
+void *SafeMalloc(size_t size);
+
+/// @brief A 'safe' version of calloc() which prints an error and exits the program when calloc() fails.
+/// @param count The number of elements to allocate memory for.
+/// @param size The size (in bytes) of each element.
+/// @return A pointer to the allocated block of memory.
+void *SafeCalloc(size_t count, size_t size);
+
+/// @brief A 'safe' version of realloc() which prints an error and exits the program when realloc() fails.
+/// @param block A pointer to the block of memory to re-allocate.
+/// @param size The size (in bytes) to re-allocate to the given block.
+/// @return A pointer to the allocated block of memory.
+void *SafeRealloc(void *block, size_t size);
 
 #endif

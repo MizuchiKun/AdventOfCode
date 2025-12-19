@@ -16,7 +16,7 @@
 /// @return True if the ID is valid, false otherwise.
 static inline bool IsIDValidOld(uint64_t id)
 {
-    uint32_t digitCount = CountDigits(id);
+    uint8_t digitCount = CountDigits(id);
     if (digitCount % 2 == 1)
     {
         perror("Parameter id must not have an odd number of digits.\n");
@@ -38,25 +38,25 @@ static inline bool IsIDValidOld(uint64_t id)
 /// @return True if the ID is invalid, false otherwise.
 static inline bool IsIDValidNew(uint64_t id)
 {
-    uint32_t digitCount = CountDigits(id);
+    uint8_t digitCount = CountDigits(id);
     if (digitCount == 1)
         return true;
 
     const uint8_t BASE10 = 10;
 
     // Check if id is a sequence of digits repeated partCount times.
-    for (uint32_t partCount = 2; partCount <= digitCount; partCount++)
+    for (uint8_t partCount = 2; partCount <= digitCount; partCount++)
     {
         if (digitCount % partCount != 0)  continue;
 
-        uint32_t partLength = digitCount / partCount;
+        uint8_t partLength = digitCount / partCount;
         uint64_t idCopy = id;
 
         uint64_t previousPart = 0;
         bool isIdValid = false;
         for (uint32_t i = 0; i < partCount; i++)
         {
-            uint32_t exponent = digitCount - (i + 1) * partLength;
+            uint8_t exponent = digitCount - (i + 1) * partLength;
             uint64_t powerAfterCurrentPart = (uint64_t)powl(BASE10, (double)exponent);
 
             uint64_t currentPart = idCopy / powerAfterCurrentPart;
@@ -95,14 +95,14 @@ static uint64_t SumInvalidIDsInRange(uint64_t start, uint64_t end, bool useOldCr
     uint64_t invalidIDsSum = 0;
     for (uint64_t id = start; id <= end; id++)
     {
-        uint32_t digitCount = CountDigits(id);
+        uint8_t digitCount = CountDigits(id);
         bool hasOddDigitCount = digitCount % 2 == 1;
 
         if (useOldCriteria && hasOddDigitCount)
         {
             long double lel = 0.0;
             int32_t size = sizeof(lel);
-            uint64_t minValueWithMoreDigits = powl(BASE10, digitCount);
+            uint64_t minValueWithMoreDigits = (uint64_t)powl(BASE10, digitCount);
             if (minValueWithMoreDigits <= end)
             {
                 // WHEN USING THE OLD CRITERIA, skip ahead to the smallest value 
@@ -134,7 +134,7 @@ static uint64_t SumInvalidIDsInRange(uint64_t start, uint64_t end, bool useOldCr
 /// The old criteria considers an ID invalid when it consists of a sequence of digits repeated twice (e.g. 123123),\n
 /// while the new criteria considers them invalid when the sequence is repeated AT LEAST twice (e.g. also 1212121212).
 /// @return The sum of all invalid IDs.
-static uint64_t ProcessIDsFile(char *filename, bool useNewCriteria)
+static uint64_t ProcessIDsFile(const char *filename, bool useNewCriteria)
 {
     FILE *file = fopen(filename, "r");
     if (file == NULL)
