@@ -1,6 +1,6 @@
 ﻿#ifndef template_h
 #define template_h
 
-void DayXX();
+void AoC2025_DayXX();
 
 #endif

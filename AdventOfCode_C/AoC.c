@@ -5,11 +5,12 @@
 #include <stdlib.h>
 #include "AoC2025_Day1.h"
 #include "AoC2025_Day2.h"
+#include "AoC2025_Day3.h"
 
 int main()
 {
     // Run the current day's code.
-    AoC2025_Day2();
+    AoC2025_Day3();
 
     return 0;
 }
