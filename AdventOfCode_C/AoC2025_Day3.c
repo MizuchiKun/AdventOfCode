@@ -1,4 +1,6 @@
 ﻿#include <malloc.h>
+#include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,50 +9,94 @@
 
 #define LINE_LENGTH 110
 
-static uint32_t LargestJoltageInBank(uint8_t *batteries, const uint8_t batteryCount)
+/// @brief Gets the largest Joltage in the given battery bank/array.\n
+/// Joltage is the number you get when enabling enabledBatteriesCount batteries 
+/// per bank and then concatenating their values/digits.
+/// @param batteries The battery bank.
+/// @param batteryCount The number of batteries in the given bank.
+/// @param enabledBatteriesCount How many batteries to enable in each bank.
+/// @return The max Joltage of the given battery bank under the given conditions.
+static uint64_t LargestJoltageInBank(uint8_t *batteries, 
+                                     const uint8_t batteryCount,
+                                     const uint8_t enabledBatteriesCount)
 {
-    if (batteryCount < 2)
+    if (batteryCount < enabledBatteriesCount)
     {
-        printf("Battery array / bank must have at least 2 elements.");
+        printf("Battery array / bank must have at least %d elements.\n", enabledBatteriesCount);
         exit(EXIT_FAILURE);
     }
-    uint8_t firstDigit = batteries[0];
-    uint8_t secondDigit = batteries[1];
-
-    for (uint8_t i = 2; i < batteryCount; i++)
+    uint8_t *enabledBatteries = (uint8_t*)SafeCalloc(enabledBatteriesCount, sizeof(*enabledBatteries));
+    for (uint8_t i = 0; i < enabledBatteriesCount; i++)
     {
-        uint8_t newDigit = batteries[i];
+        enabledBatteries[i] = batteries[i];
+    }
 
-        // Let's call the first, second, and 'new' digits 'A', 'B', and 'N'.
-        if (secondDigit > firstDigit)
+    for (uint8_t i = enabledBatteriesCount; i < batteryCount; i++)
+    {
+        uint8_t nextBattery = batteries[i];
+        uint8_t *lastEnabledBattery = &enabledBatteries[enabledBatteriesCount - 1];
+
+        bool batteriesAreDecreasing = true;
+        uint8_t increasingBatteryIndex = -1;
+        for (uint8_t i = 0; i < enabledBatteriesCount - 1; i++)
         {
-            // If B > A, store B in A, and store whichever-value-N-is in B.
-            // This is because any value of 'B-ty something' will always 
-            //   be greater than a value of 'A-ty something', when B > A.
-            // E.g.: batteries = {781} => A=7, B=8, N=1;  A=8, B=1;  81 > 78.
-            // (Maybe there's a better explanation/wording, but oh well . . .)
-            firstDigit = secondDigit;
-            secondDigit = newDigit;
+            // Check for a battery value which is lower than the previous one,
+            // FROM START TO END, so the stored index is of the case 
+            //     with a more significant digit (in case of multiple cases), 
+            // since 'removing' the value before it results in the biggest maxJoltage increase.
+            // (See if-elseif after this loop.)
+            if (enabledBatteries[i] < enabledBatteries[i + 1])
+            {
+                batteriesAreDecreasing = false;
+                increasingBatteryIndex = i + 1;
+                break;
+            }
         }
-        else if (newDigit > secondDigit)
+
+        if (!batteriesAreDecreasing)
         {
-            // If N > B, store N in B.
-            // So just update B with a larger value. Not sure what else to say.
-            // This might cause the above case in the next iteration.
-            secondDigit = newDigit;
+            // If any battery value is greater than the one before it,
+            // 'removing' that prior value from the array, and 'appending' the nextBattery
+            // value at the end, results in a larger maxJoltage at the end.
+            for (uint8_t i = increasingBatteryIndex; i < enabledBatteriesCount; i++)
+            {
+                enabledBatteries[i - 1] = enabledBatteries[i];
+            }
+            *lastEnabledBattery = nextBattery;
+        }
+        else if (nextBattery > *lastEnabledBattery)
+        {
+            // Else if the nextBattery is larger than the lastEnabledBattery, 
+            // replace the last battery with the nextBattery, 
+            // since that's the largest possible maxJoltage increase remaining.
+            *lastEnabledBattery = nextBattery;
         }
     }
 
-    uint32_t maxJoltage = 10 * firstDigit + secondDigit;
+    uint64_t maxJoltage = 0;
+    const uint8_t BASE10 = 10;
+    for (uint8_t i = 0; i < enabledBatteriesCount; i++)
+    {
+        uint64_t powerOfTen = (uint64_t)powl(BASE10, enabledBatteriesCount - i - 1);
+        maxJoltage += enabledBatteries[i] * powerOfTen;
+    }
+
+    free(enabledBatteries);
     return maxJoltage;
 }
 
-static uint32_t GetTotalJoltageOfFile(const char *filename)
+/// @brief Gets the max total Joltage of the given file.\n
+/// Joltage is the number you get when enabling enabledBatteriesCount batteries 
+/// per bank/line and then concatenating their values/digits.
+/// @param filename The filename of the file to get the Joltage of.
+/// @param enabledBatteriesCount How many batteries to enable in each bank.
+/// @return The max total Joltage of the file.
+static uint64_t GetMaxTotalJoltageOfFile(const char *filename, const uint8_t enabledBatteriesCount)
 {
     FILE *file = fopen(filename, "r");
     char line[LINE_LENGTH] = "";
 
-    uint32_t totalJoltage = 0;
+    uint64_t totalJoltage = 0;
     while (fgets(line, LINE_LENGTH, file))
     {
         char *currentChar = line;
@@ -66,8 +112,9 @@ static uint32_t GetTotalJoltageOfFile(const char *filename)
             batteryCount++;
         }
         batteries = SafeRealloc(batteries, batteryCount * sizeof(*batteries));
+        /// Replace with dynamic array, once implemented.  But do that another time . . .
 
-        totalJoltage += LargestJoltageInBank(batteries, batteryCount);
+        totalJoltage += LargestJoltageInBank(batteries, batteryCount, enabledBatteriesCount);
 
         free(batteries);
     }
@@ -78,13 +125,19 @@ static uint32_t GetTotalJoltageOfFile(const char *filename)
 static void Part1()
 {
     const char *filename = "AoC2025_Day3.txt";
-    uint32_t totalJoltage = GetTotalJoltageOfFile(filename);
-    printf("Part 1: Total Joltage: %d\n", totalJoltage);
+    const uint8_t enabledBatteriesCount = 2;
+    uint64_t totalJoltage = GetMaxTotalJoltageOfFile(filename, enabledBatteriesCount);
+    printf("Part 1: Total Joltage (%u enabled batteries): %zu\n", 
+           enabledBatteriesCount, totalJoltage);
 }
 
 static void Part2()
 {
-    printf("Part 2: <not implemented yet>\n");
+    const char *filename = "AoC2025_Day3.txt";
+    const uint8_t enabledBatteriesCount = 12;
+    uint64_t totalJoltage = GetMaxTotalJoltageOfFile(filename, enabledBatteriesCount);
+    printf("Part 2: Total Joltage (%u enabled batteries): %zu\n",
+           enabledBatteriesCount, totalJoltage);
 }
 
 void AoC2025_Day3()
