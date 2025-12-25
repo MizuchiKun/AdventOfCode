@@ -153,6 +153,8 @@
     <ClCompile Include="AoC2025_Day1.c" />
     <ClCompile Include="AoC2025_Day2.c" />
     <ClCompile Include="AoC2025_Day3.c" />
+    <ClCompile Include="malloc_custom.c" />
+    <ClCompile Include="pcre2posix_custom.c" />
     <ClCompile Include="template.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
@@ -163,7 +165,10 @@
     <ClInclude Include="AoC2025_Day1.h" />
     <ClInclude Include="AoC2025_Day2.h" />
     <ClInclude Include="AoC2025_Day3.h" />
+    <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="malloc_custom.h" />
     <ClInclude Include="pcre2posix_custom.h" />
+    <ClInclude Include="stdint_custom.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

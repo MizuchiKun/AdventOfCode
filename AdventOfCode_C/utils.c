@@ -1,16 +1,17 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
-#include <malloc.h>
 #include <math.h>
-#include "utils.h"
+#include "malloc_custom.h"
 #include "pcre2posix_custom.h"
+#include "stdint_custom.h"
+#include "utils.h"
 
-int32_t **Create2DIntArray(size_t lengthDimension1, size_t lengthDimension2)
+i32 **Create2DIntArray(size_t lengthDimension1, size_t lengthDimension2)
 {
-    int32_t *values = (int*)SafeCalloc(lengthDimension1 * lengthDimension2, sizeof(int));
-    int32_t **array = (int**)SafeMalloc(lengthDimension1 * sizeof(int*));
+    // I might try using the dynamic arrays here, but not now . . . (a bit more complicated, I think)
+    i32 *values = (int*)SafeCalloc(lengthDimension1 * lengthDimension2, sizeof(int));
+    i32 **array = (int**)SafeMalloc(lengthDimension1 * sizeof(int*));
 
     for (size_t i = 0; i < lengthDimension1; i++)
     {
@@ -20,23 +21,23 @@ int32_t **Create2DIntArray(size_t lengthDimension1, size_t lengthDimension2)
     return array;
 }
 
-void Destroy2DIntArray(int32_t **array)
+void Destroy2DIntArray(i32 **array)
 {
     free(*array);
     free(array);
 }
 
-static int32_t OccurenceLowerBound(int32_t array[], int32_t length, int32_t target)
+static i32 OccurenceLowerBound(i32 array[], i32 length, i32 target)
 {
     // Feels a bit redundant having two identical functions with only one condition being different.
-    int32_t result = length;
-    int32_t lowerBound = 0;
-    int32_t upperBound = length - 1;
+    i32 result = length;
+    i32 lowerBound = 0;
+    i32 upperBound = length - 1;
 
     while (lowerBound <= upperBound)
     {
-        int32_t intervalSpan = upperBound - lowerBound;
-        int32_t middle = lowerBound + intervalSpan / 2;
+        i32 intervalSpan = upperBound - lowerBound;
+        i32 middle = lowerBound + intervalSpan / 2;
 
         if (array[middle] >= target)
         {
@@ -52,17 +53,17 @@ static int32_t OccurenceLowerBound(int32_t array[], int32_t length, int32_t targ
     return result;
 }
 
-static int32_t OccurenceUpperBound(int32_t array[], int32_t length, int32_t target)
+static i32 OccurenceUpperBound(i32 array[], i32 length, i32 target)
 {
     // Feels a bit redundant having two identical functions with only one condition being different.
-    int32_t result = length;
-    int32_t lowerBound = 0;
-    int32_t upperBound = length - 1;
+    i32 result = length;
+    i32 lowerBound = 0;
+    i32 upperBound = length - 1;
 
     while (lowerBound <= upperBound)
     {
-        int32_t intervalSpan = upperBound - lowerBound;
-        int32_t middle = lowerBound + intervalSpan / 2;
+        i32 intervalSpan = upperBound - lowerBound;
+        i32 middle = lowerBound + intervalSpan / 2;
 
         if (array[middle] > target)
         {
@@ -79,70 +80,25 @@ static int32_t OccurenceUpperBound(int32_t array[], int32_t length, int32_t targ
 }
 
 // Basis of this binary search frequency counting code: https://www.geeksforgeeks.org/dsa/count-number-of-occurrences-or-frequency-in-a-sorted-array/#expected-approach-using-binary-search-ologn-time-and-o1-space.
-int32_t CountFrequency(int32_t *array, int32_t length, int32_t target)
+i32 CountFrequency(i32 array[], i32 length, i32 target)
 {
     return OccurenceUpperBound(array, length, target)
            - OccurenceLowerBound(array, length, target);
 }
 
-char *MatchToStr(regmatch_t *match, char *sourceString)
+u64 Modulo(i64 a, i64 b)
 {
-    const char NUL = '\0';
-    const size_t NUL_SIZE = sizeof(NUL);
-    size_t size = (size_t)(match->rm_eo - match->rm_so);
-    char *substring = SafeMalloc(size + NUL_SIZE);
-
-    memcpy(substring, sourceString + match->rm_so, size);
-    substring[size] = NUL;
-
-    return substring;
-}
-
-uint64_t Modulo(int64_t a, int64_t b)
-{
-    uint64_t result = a % b;
+    u64 result = a % b;
     return (result < 0) ? result + b : result;
 }
 
-int8_t Sign(int64_t number)
+i8 Sign(i64 number)
 {
     return (number == 0) ? 0 : number / abs(number);
 }
 
-uint8_t CountDigits(int64_t value)
+u8 CountDigits(i64 value)
 {
     if (value == 0)  return 1;
-    return (uint8_t)log10l(llabs(value)) + 1;
-}
-
-/// @brief Prints an error and exits the program if there was an allocation failure aka. the given pointer is null.
-/// @param block The resulting pointer of a memory allocation to check.
-static void HandleAllocationFailure(void *block)
-{
-    if (!block)
-    {
-        perror("Memory allocation failed.");
-        exit(EXIT_FAILURE);
-    }
-}
-
-void *SafeMalloc(size_t size)
-{
-    void *allocatedMemory = malloc(size);
-    HandleAllocationFailure(allocatedMemory);
-    return allocatedMemory;
-}
-
-void *SafeCalloc(size_t count, size_t size)
-{
-    void *allocatedMemory = calloc(count, size);
-    HandleAllocationFailure(allocatedMemory);
-    return allocatedMemory;
-}
-
-void *SafeRealloc(void *block, size_t size)
-{
-    void *allocatedMemory = realloc(block, size);
-    HandleAllocationFailure(allocatedMemory);
-    return allocatedMemory;
+    return (u8)log10l(llabs(value)) + 1;
 }

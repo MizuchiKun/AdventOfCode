@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AoC2024_Day1.h"
+#include "stdint_custom.h"
 #include "utils.h"
 
-static int CompareInts(const void *a, const void *b)
+static i32 CompareInts(const void *a, const void *b)
 {
-    int intA = *((int*)a);
-    int intB = *((int*)b);
+    i32 intA = *((int*)a);
+    i32 intB = *((int*)b);
 
     return (intA > intB) - (intA < intB);
 }
 
-static int** ExtractLocationIDs(int *listCount, int *locationsPerList)
+static int** ExtractLocationIDs(i32 *listCount, i32 *locationsPerList)
 {
     char filename[] = "AoC2024_Day1.txt";
     FILE *file = fopen(filename, "r");
@@ -23,20 +24,20 @@ static int** ExtractLocationIDs(int *listCount, int *locationsPerList)
     }
 
     #define LINE_LENGTH 20
-    const int LIST_COUNT = 2;
-    const int LOCATIONS_PER_LIST = 1000;
+    const i32 LIST_COUNT = 2;
+    const i32 LOCATIONS_PER_LIST = 1000;
     *listCount = LIST_COUNT;
     *locationsPerList = LOCATIONS_PER_LIST;
     char line[LINE_LENGTH];
-    int lineIndex = 0;
-    int **locationIDs = Create2DIntArray(LIST_COUNT, LOCATIONS_PER_LIST);
+    i32 lineIndex = 0;
+    i32 **locationIDs = Create2DIntArray(LIST_COUNT, LOCATIONS_PER_LIST);
     while (fgets(line, LINE_LENGTH, file))
     {
         const char DELIMITER[] = " \n";
-        const int BASE = 10;
+        const i32 BASE = 10;
         char *numberToken = NULL;
         char *savePointer = line;
-        int listIndex = 0;
+        i32 listIndex = 0;
         while (( numberToken = strtok_s(savePointer, DELIMITER, &savePointer) ))
         {
             // Technically strtok_s() is somewhat redundant here because strtol() can just extract 
@@ -60,15 +61,15 @@ static int** ExtractLocationIDs(int *listCount, int *locationsPerList)
 
 static void Part1()
 {
-    int LIST_COUNT = 0;
-    int LOCATIONS_PER_LIST = 0;
-    int **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
+    i32 LIST_COUNT = 0;
+    i32 LOCATIONS_PER_LIST = 0;
+    i32 **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
 
-    for (int i = 0; i < LIST_COUNT; i++)
+    for (i32 i = 0; i < LIST_COUNT; i++)
         qsort(locationIDs[i], LOCATIONS_PER_LIST, sizeof(locationIDs[i][0]), CompareInts);
     
-    int totalDistance = 0;
-    for (int i = 0; i < LOCATIONS_PER_LIST; i++)
+    i32 totalDistance = 0;
+    for (i32 i = 0; i < LOCATIONS_PER_LIST; i++)
         totalDistance += abs(locationIDs[0][i] - locationIDs[1][i]);
 
     printf("Part 1: The total distance between the lists is: %d\n", totalDistance);
@@ -78,17 +79,17 @@ static void Part1()
 
 static void Part2()
 {
-    int LIST_COUNT = 0;
-    int LOCATIONS_PER_LIST = 0;
-    int **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
+    i32 LIST_COUNT = 0;
+    i32 LOCATIONS_PER_LIST = 0;
+    i32 **locationIDs = ExtractLocationIDs(&LIST_COUNT, &LOCATIONS_PER_LIST);
 
-    for (int i = 0; i < LIST_COUNT; i++)
+    for (i32 i = 0; i < LIST_COUNT; i++)
         qsort(locationIDs[i], LOCATIONS_PER_LIST, sizeof(locationIDs[i][0]), CompareInts);
 
-    int similarityScore = 0;
-    for (int i = 0; i < LOCATIONS_PER_LIST; i++)
+    i32 similarityScore = 0;
+    for (i32 i = 0; i < LOCATIONS_PER_LIST; i++)
     {
-        int target = locationIDs[0][i];
+        i32 target = locationIDs[0][i];
         similarityScore += target * CountFrequency(locationIDs[1], LOCATIONS_PER_LIST, target);
     }
 
@@ -97,7 +98,7 @@ static void Part2()
     Destroy2DIntArray(locationIDs);
 }
 
-void Day1()
+void AoC2024_Day1()
 {
     Part1();
 

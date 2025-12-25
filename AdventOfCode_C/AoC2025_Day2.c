@@ -1,10 +1,10 @@
-﻿#include <stdio.h>
+﻿#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <string.h>
-#include <math.h>
 #include "AoC2025_Day2.h"
+#include "stdint_custom.h"
 #include "utils.h"
 
 #define LINE_LENGTH 560
@@ -14,19 +14,19 @@
 /// E.g. 123123, 11, 17731773, etc.
 /// @param id The ID to check.
 /// @return True if the ID is valid, false otherwise.
-static inline bool IsIDValidOld(uint64_t id)
+static inline bool IsIDValidOld(u64 id)
 {
-    uint8_t digitCount = CountDigits(id);
+    u8 digitCount = CountDigits(id);
     if (digitCount % 2 == 1)
     {
         perror("Parameter id must not have an odd number of digits.\n");
         exit(EXIT_FAILURE);
     }
 
-    const uint8_t BASE10 = 10;
-    const uint64_t POWER_OF_TEN_IN_MIDDLE = (uint64_t)powl(BASE10, (double)digitCount / 2);
-    uint64_t firstHalf = id / POWER_OF_TEN_IN_MIDDLE;
-    uint64_t secondHalf = id % POWER_OF_TEN_IN_MIDDLE;
+    const u8 BASE10 = 10;
+    const u64 POWER_OF_TEN_IN_MIDDLE = (u64)powl(BASE10, (double)digitCount / 2);
+    u64 firstHalf = id / POWER_OF_TEN_IN_MIDDLE;
+    u64 secondHalf = id % POWER_OF_TEN_IN_MIDDLE;
 
     return firstHalf != secondHalf;
 }
@@ -36,30 +36,30 @@ static inline bool IsIDValidOld(uint64_t id)
 /// E.g. 123123, 1717, but also 111, 5353535353, etc.
 /// @param id The ID to check.
 /// @return True if the ID is invalid, false otherwise.
-static inline bool IsIDValidNew(uint64_t id)
+static inline bool IsIDValidNew(u64 id)
 {
-    uint8_t digitCount = CountDigits(id);
+    u8 digitCount = CountDigits(id);
     if (digitCount == 1)
         return true;
 
-    const uint8_t BASE10 = 10;
+    const u8 BASE10 = 10;
 
     // Check if id is a sequence of digits repeated partCount times.
-    for (uint8_t partCount = 2; partCount <= digitCount; partCount++)
+    for (u8 partCount = 2; partCount <= digitCount; partCount++)
     {
         if (digitCount % partCount != 0)  continue;
 
-        uint8_t partLength = digitCount / partCount;
-        uint64_t idCopy = id;
+        u8 partLength = digitCount / partCount;
+        u64 idCopy = id;
 
-        uint64_t previousPart = 0;
+        u64 previousPart = 0;
         bool isIdValid = false;
-        for (uint32_t i = 0; i < partCount; i++)
+        for (u32 i = 0; i < partCount; i++)
         {
-            uint8_t exponent = digitCount - (i + 1) * partLength;
-            uint64_t powerAfterCurrentPart = (uint64_t)powl(BASE10, (double)exponent);
+            u8 exponent = digitCount - (i + 1) * partLength;
+            u64 powerAfterCurrentPart = (u64)powl(BASE10, (double)exponent);
 
-            uint64_t currentPart = idCopy / powerAfterCurrentPart;
+            u64 currentPart = idCopy / powerAfterCurrentPart;
             idCopy %= powerAfterCurrentPart;
 
             if (i == 0)
@@ -89,20 +89,20 @@ static inline bool IsIDValidNew(uint64_t id)
 /// @param end The end of the range (inclusively).
 /// @param useOldCriteria Whether to use the old or new criteria for invalid IDs.
 /// @return The sum of all invalid IDs in the range.
-static uint64_t SumInvalidIDsInRange(uint64_t start, uint64_t end, bool useOldCriteria)
+static u64 SumInvalidIDsInRange(u64 start, u64 end, bool useOldCriteria)
 {
-    const uint8_t BASE10 = 10;
-    uint64_t invalidIDsSum = 0;
-    for (uint64_t id = start; id <= end; id++)
+    const u8 BASE10 = 10;
+    u64 invalidIDsSum = 0;
+    for (u64 id = start; id <= end; id++)
     {
-        uint8_t digitCount = CountDigits(id);
+        u8 digitCount = CountDigits(id);
         bool hasOddDigitCount = digitCount % 2 == 1;
 
         if (useOldCriteria && hasOddDigitCount)
         {
             long double lel = 0.0;
-            int32_t size = sizeof(lel);
-            uint64_t minValueWithMoreDigits = (uint64_t)powl(BASE10, digitCount);
+            i32 size = sizeof(lel);
+            u64 minValueWithMoreDigits = (u64)powl(BASE10, digitCount);
             if (minValueWithMoreDigits <= end)
             {
                 // WHEN USING THE OLD CRITERIA, skip ahead to the smallest value 
@@ -134,7 +134,7 @@ static uint64_t SumInvalidIDsInRange(uint64_t start, uint64_t end, bool useOldCr
 /// The old criteria considers an ID invalid when it consists of a sequence of digits repeated twice (e.g. 123123),\n
 /// while the new criteria considers them invalid when the sequence is repeated AT LEAST twice (e.g. also 1212121212).
 /// @return The sum of all invalid IDs.
-static uint64_t ProcessIDsFile(const char *filename, bool useNewCriteria)
+static u64 ProcessIDsFile(const char *filename, bool useNewCriteria)
 {
     FILE *file = fopen(filename, "r");
     if (file == NULL)
@@ -144,18 +144,18 @@ static uint64_t ProcessIDsFile(const char *filename, bool useNewCriteria)
     }
 
     char line[LINE_LENGTH] = "";
-    uint64_t invalidIDsSum = 0;
+    u64 invalidIDsSum = 0;
     const char NUL = '\0';
-    const uint8_t BASE10 = 10;
-    const uint8_t SEPARATOR_OFFSET = sizeof(char);  // The size of a separating '-' or ','.
+    const u8 BASE10 = 10;
+    const u8 SEPARATOR_OFFSET = sizeof(char);  // The size of a separating '-' or ','.
     while (fgets(line, LINE_LENGTH, file))
     {
         char *numStart = line;
         while (*numStart != NUL)
         {
-            uint64_t start = strtoull(numStart, &numStart, BASE10);
+            u64 start = strtoull(numStart, &numStart, BASE10);
             numStart += SEPARATOR_OFFSET;  // Offset because of separating '-'.
-            uint64_t end = strtoull(numStart, &numStart, BASE10);
+            u64 end = strtoull(numStart, &numStart, BASE10);
             numStart += SEPARATOR_OFFSET;  // Offset because of separating ','.
 
             invalidIDsSum += SumInvalidIDsInRange(start, end, useNewCriteria);
@@ -169,7 +169,7 @@ static uint64_t ProcessIDsFile(const char *filename, bool useNewCriteria)
 static void Part1()
 {
     const char filename[] = "AoC2025_Day2.txt";
-    uint64_t invalidIDsSum = ProcessIDsFile(filename, true);
+    u64 invalidIDsSum = ProcessIDsFile(filename, true);
 
     printf("Part 1: The sum of all invalid IDs (old criteria): %ju\n", (intmax_t)invalidIDsSum);
 }
@@ -177,7 +177,7 @@ static void Part1()
 static void Part2()
 {
     const char filename[] = "AoC2025_Day2.txt";
-    uint64_t invalidIDsSum = ProcessIDsFile(filename, false);
+    u64 invalidIDsSum = ProcessIDsFile(filename, false);
 
     printf("Part 2: The sum of all invalid IDs (new criteria): %ju\n", (intmax_t)invalidIDsSum);
 }

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "AoC2025_Day1.h"
+#include "stdint_custom.h"
 #include "utils.h"
 
 #define LINE_LENGTH 10
@@ -11,15 +12,15 @@
 /// 
 /// @param instruction A rotation instruction of form "L\d+" or "R\d+".
 /// @return The numeric representation of the rotation. E.g.: "L13" = -13, "R4" = +4.
-static int GetRotation(char *instruction)
+static i32 GetRotation(char *instruction)
 {
     const char LEFT_PREFIX = 'L';
     const char RIGHT_PREFIX = 'R';
 
     char *endPtr;
-    const int BASE10 = 10;
+    const i32 BASE10 = 10;
     char *numberStart = instruction + 1;
-    int rotation = strtol(numberStart, &endPtr, BASE10);
+    i32 rotation = strtol(numberStart, &endPtr, BASE10);
     
     if (instruction[0] == LEFT_PREFIX)
         rotation *= (-1);
@@ -27,15 +28,15 @@ static int GetRotation(char *instruction)
     return rotation;
 }
 
-/// @brief Increments the password in-place if the dial points to 0 after the given instruction.
+/// @brief Increments the password in-place if the dial poi32s to 0 after the given instruction.
 /// 
 /// @param instruction A rotation instruction of form "L\d+" or "R\d+".
 /// @param password The current password.
 /// @param dial The current dial position. Will be changed according to `instruction`.
-static void IncrementPasswordOldMethod(char *instruction, int *password, int *dial)
+static void IncrementPasswordOldMethod(char *instruction, i32 *password, i32 *dial)
 {
-    const int TARGET_VALUE = 0;
-    const int CLICK_COUNT = 100;
+    const i32 TARGET_VALUE = 0;
+    const i32 CLICK_COUNT = 100;
 
     *dial += GetRotation(instruction);
     *dial %= CLICK_COUNT;
@@ -43,21 +44,21 @@ static void IncrementPasswordOldMethod(char *instruction, int *password, int *di
         (*password)++;
 }
 
-/// @brief Increments the password in-place for every time the dial points to 0, whether during a rotation or at the end.
+/// @brief Increments the password in-place for every time the dial poi32s to 0, whether during a rotation or at the end.
 /// 
 /// @param instruction A rotation instruction of form "L\d+" or "R\d+".
 /// @param password The current password.
 /// @param dial The current dial position. Will be changed according to `instruction`.
-static void IncrementPasswordNewMethod(char *instruction, int *password, int *dial)
+static void IncrementPasswordNewMethod(char *instruction, i32 *password, i32 *dial)
 {
-    const int TARGET = 0;
-    const int CLICK_COUNT = 100;
+    const i32 TARGET = 0;
+    const i32 CLICK_COUNT = 100;
 
-    int rotation = GetRotation(instruction);
-    int rotationFullCycles = abs(rotation) / CLICK_COUNT;
-    int rotationRemainder = rotation % CLICK_COUNT;
-    int dialOld = *dial;
-    int dialNew = dialOld + rotationRemainder;
+    i32 rotation = GetRotation(instruction);
+    i32 rotationFullCycles = abs(rotation) / CLICK_COUNT;
+    i32 rotationRemainder = rotation % CLICK_COUNT;
+    i32 dialOld = *dial;
+    i32 dialNew = dialOld + rotationRemainder;
     bool dialHitTarget = false;
     if (rotationRemainder < 0)
     {
@@ -79,15 +80,15 @@ static void IncrementPasswordNewMethod(char *instruction, int *password, int *di
     *password += rotationFullCycles;
 
     *dial += rotation;
-    *dial = (int)Modulo(*dial, CLICK_COUNT);
+    *dial = (i32)Modulo(*dial, CLICK_COUNT);
 }
 
 /// @brief Prcoesses all rotation instructions in the given file and returns the password from it.
 /// 
 /// @param filename The name of the file with the rotation instructions.
 /// @param useNewMethod Whether to use the new or old method.
-/// @return The password aka. number of times the vault's dial points at 0 after a rotation.
-static int RotationsToPassword(char *filename, const bool useNewMethod)
+/// @return The password aka. number of times the vault's dial poi32s at 0 after a rotation.
+static i32 RotationsToPassword(char *filename, const bool useNewMethod)
 {
     FILE *file = fopen(filename, "r");
     if (file == NULL)
@@ -97,8 +98,8 @@ static int RotationsToPassword(char *filename, const bool useNewMethod)
         exit(EXIT_FAILURE);
     }
 
-    int password = 0;
-    int dial = 50;
+    i32 password = 0;
+    i32 dial = 50;
     char line[LINE_LENGTH] = "";
     while (fgets(line, LINE_LENGTH, file))
     {
@@ -115,7 +116,7 @@ static int RotationsToPassword(char *filename, const bool useNewMethod)
 static void Part1()
 {
     char filename[] = "AoC2025_Day1.txt";
-    int password = RotationsToPassword(filename, false);
+    i32 password = RotationsToPassword(filename, false);
 
     printf("Part 1: The password is: %d\n", password);
 }
@@ -123,7 +124,7 @@ static void Part1()
 static void Part2()
 {
     char filename[] = "AoC2025_Day1.txt";
-    int password = RotationsToPassword(filename, true);
+    i32 password = RotationsToPassword(filename, true);
 
     printf("Part 2: The password (using new method) is: %d\n", password);
 }

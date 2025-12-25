@@ -37,6 +37,9 @@
     <Filter Include="Source Files\AoC2025\AoC2025_Day3">
       <UniqueIdentifier>{14799e3b-e734-49f6-81e5-18ddb6fbb69a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Custom Libraries">
+      <UniqueIdentifier>{507dfa6b-f30b-4973-9811-9f6cba0e47a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="template.c">
@@ -51,9 +54,6 @@
     <ClCompile Include="AoC2024_Day3.c">
       <Filter>Source Files\AoC2024\AoC2024_Day3</Filter>
     </ClCompile>
-    <ClCompile Include="utils.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AoC.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,6 +65,15 @@
     </ClCompile>
     <ClCompile Include="AoC2025_Day3.c">
       <Filter>Source Files\AoC2025\AoC2025_Day3</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.c">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="malloc_custom.c">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="pcre2posix_custom.c">
+      <Filter>Source Files\Custom Libraries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,20 +89,29 @@
     <ClInclude Include="AoC2024_Day3.h">
       <Filter>Source Files\AoC2024\AoC2024_Day3</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="AoC2025_Day1.h">
       <Filter>Source Files\AoC2025\AoC2025_Day1</Filter>
     </ClInclude>
     <ClInclude Include="AoC2025_Day2.h">
       <Filter>Source Files\AoC2025\AoC2025_Day2</Filter>
     </ClInclude>
-    <ClInclude Include="pcre2posix_custom.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="AoC2025_Day3.h">
       <Filter>Source Files\AoC2025\AoC2025_Day3</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="pcre2posix_custom.h">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicArray.h">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="stdint_custom.h">
+      <Filter>Source Files\Custom Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="malloc_custom.h">
+      <Filter>Source Files\Custom Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

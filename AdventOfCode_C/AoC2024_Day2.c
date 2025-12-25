@@ -1,22 +1,24 @@
-﻿#include <stdio.h>
+﻿#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <malloc.h>
 #include <string.h>
 #include "AoC2024_Day2.h"
+#include "DynamicArray.h"
+#include "malloc_custom.h"
+#include "stdint_custom.h"
 #include "utils.h"
 
-static bool IsReportSafe(int *report, int reportLength)
+static bool IsReportSafe(i32DA report)
 {
     bool isSafe = true;
 
-    const bool REPORT_STARTS_INCREASING = report[1] > report[0];
-    const int MIN_LEVEL_DIFFERENCE = 1;
-    const int MAX_LEVEL_DIFFERENCE = 3;
-    for (int i = 1; i < reportLength; i++)
+    const bool REPORT_STARTS_INCREASING = report.items[1] > report.items[0];
+    const i32 MIN_LEVEL_DIFFERENCE = 1;
+    const i32 MAX_LEVEL_DIFFERENCE = 3;
+    for (u32 i = 1; i < report.count; i++)
     {
-        int levelDifference = abs(report[i] - report[i - 1]);
-        bool isIncreasing = report[i] > report[i - 1];
+        i32 levelDifference = abs(report.items[i] - report.items[i - 1]);
+        bool isIncreasing = report.items[i] > report.items[i - 1];
         bool safeLevelDifference = levelDifference >= MIN_LEVEL_DIFFERENCE
                                    && levelDifference <= MAX_LEVEL_DIFFERENCE;
         if (isIncreasing != REPORT_STARTS_INCREASING
@@ -30,37 +32,41 @@ static bool IsReportSafe(int *report, int reportLength)
     return isSafe;
 }
 
-static bool IsReportSafeProblemDampener(int *report, int reportLength)
+static bool IsReportSafeProblemDampener(i32DA report)
 {
-    if (IsReportSafe(report, reportLength))
+    if (IsReportSafe(report))
         return true;  // Don't bother checking 'problem dampener' stuff.
 
-    const int SUBREPORT_LENGTH = reportLength - 1;
+    const u32 SUBREPORT_LENGTH = report.count - 1;
     bool isSafe = false;
 
-    for (int preGapCount = 0; preGapCount < reportLength; preGapCount++)
+    for (u32 preGapCount = 0; preGapCount < report.count; preGapCount++)
     {
-        int *subreport = (int*)SafeCalloc(SUBREPORT_LENGTH, sizeof(*subreport));
+        i32DA subreport = {
+            .items = SafeCalloc(SUBREPORT_LENGTH, sizeof(*subreport.items)),
+            .count = SUBREPORT_LENGTH,
+            .capacity = SUBREPORT_LENGTH
+        };
 
-        const int bytesPreGap = preGapCount * sizeof(*subreport);
-        const int bytesPostGap = (SUBREPORT_LENGTH - preGapCount) 
-                                 * sizeof(*subreport);
-        memcpy(subreport, report, bytesPreGap);
-        memcpy(subreport + preGapCount, report + preGapCount + 1, bytesPostGap);
+        const i32 bytesPreGap = preGapCount * sizeof(*subreport.items);
+        const i32 bytesPostGap = (u64)(SUBREPORT_LENGTH - preGapCount) 
+                                 * sizeof(*subreport.items);
+        memcpy(subreport.items, report.items, bytesPreGap);
+        memcpy(subreport.items + preGapCount, report.items + preGapCount + 1, bytesPostGap);
 
-        if (IsReportSafe(subreport, SUBREPORT_LENGTH))
+        if (IsReportSafe(subreport))
         {
             isSafe = true;
             break;
         }
 
-        free(subreport);
+        daFree(subreport);
     }
 
     return isSafe;
 }
 
-static int CountSafeReports(const char filename[], bool useProblemDampener)
+static i32 CountSafeReports(const char filename[], bool useProblemDampener)
 {
     FILE *file = fopen(filename, "r");
     if (!file)
@@ -71,31 +77,27 @@ static int CountSafeReports(const char filename[], bool useProblemDampener)
 
     #define LINE_LENGTH 30
     #define LINE_COUNT 1000
-    const int MAX_LEVEL_COUNT = 10;
-    int safeReportsCount = 0;
+    const i32 MAX_LEVEL_COUNT = 10;
+    i32 safeReportsCount = 0;
     char line[LINE_LENGTH] = "";
     while (fgets(line, LINE_LENGTH, file))
     {
-        int *report = (int*)SafeCalloc(MAX_LEVEL_COUNT, sizeof(*report));
+        i32DA report = {0};
 
-        const int BASE = 10;
+        const i32 BASE = 10;
         char *remainingReportStr = line;
-        int level = 0;
-        int reportLength = 0;
+        i32 level = 0;
         while ((level = strtol(remainingReportStr, &remainingReportStr, BASE)))
-            report[reportLength++] = level;
-
-        // Resize report to its actual size (/number of elements).
-        report = SafeRealloc(report, reportLength * sizeof(*report));
+            daAppend(report, level);
+        daCrop(report);
 
         bool reportIsSafe = useProblemDampener
-                            ? IsReportSafeProblemDampener(report, reportLength)
-                            : IsReportSafe(report, reportLength);
+                            ? IsReportSafeProblemDampener(report)
+                            : IsReportSafe(report);
         if (reportIsSafe)
             safeReportsCount += 1;
 
-        free(report);
-        report = NULL;
+        daFree(report);
     }
 
     return safeReportsCount;
@@ -103,19 +105,19 @@ static int CountSafeReports(const char filename[], bool useProblemDampener)
 
 static void Part1()
 {
-    int safeReportsCount = CountSafeReports("AoC2024_Day2.txt", false);
+    i32 safeReportsCount = CountSafeReports("AoC2024_Day2.txt", false);
 
     printf("Part 1: Safe reports without problem dampener: %d\n", safeReportsCount);
 }
 
 static void Part2()
 {
-    int safeReportsCount = CountSafeReports("AoC2024_Day2.txt", true);
+    i32 safeReportsCount = CountSafeReports("AoC2024_Day2.txt", true);
 
     printf("Part 2: Safe reports with problem dampener: %d\n", safeReportsCount);
 }
 
-void Day2()
+void AoC2024_Day2()
 {
     Part1();
     Part2();

@@ -1,8 +1,8 @@
 ﻿#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "template.h"
+#include "stdint_custom.h"
 #include "utils.h"
 
 static void Part1()
